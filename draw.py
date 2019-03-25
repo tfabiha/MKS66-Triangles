@@ -10,7 +10,6 @@ def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
 
 def draw_polygons( polygons, screen, color ):
     matrix = polygons
-    print_matrix(polygons)
     
     print len(matrix)
     if len(matrix) < 3:
@@ -23,29 +22,32 @@ def draw_polygons( polygons, screen, color ):
         y0 = int(matrix[point][1])
         z0 = int(matrix[point][2])
 
-        x1 = int(matrix[point+1][2])
-        y1 = int(matrix[point+1][2])
+        x1 = int(matrix[point+1][0])
+        y1 = int(matrix[point+1][1])
         z1 = int(matrix[point+1][2])
 
-        x2 = int(matrix[point+2][2])
-        y2 = int(matrix[point+2][2])
+        x2 = int(matrix[point+2][0])
+        y2 = int(matrix[point+2][1])
         z2 = int(matrix[point+2][2])
+
+        xa = x1 - x0
+        ya = y1 - y0
+        za = z1 - z0
+
+        xb = x2 - x0
+        yb = y2 - y0
+        zb = z2 - z0
         
-        if (z1 - z0) * (z2 - z0) > 0:
-            draw_line( int(matrix[point][0]),
-                       int(matrix[point][1]),
-                       int(matrix[point+1][0]),
-                       int(matrix[point+1][1]),
+        xn = ya * zb - za * yb
+        yn = za * xb - xa * zb
+        zn = xa * yb - ya * xb
+        
+        if zn > 0:
+            draw_line( x0, y0, x1, y1,
                        screen, color)
-            draw_line( int(matrix[point][0]),
-                       int(matrix[point][1]),
-                       int(matrix[point+2][0]),
-                       int(matrix[point+2][1]),
+            draw_line( x0, y0, x2, y2,
                        screen, color)
-            draw_line( int(matrix[point+2][0]),
-                       int(matrix[point+2][1]),
-                       int(matrix[point+1][0]),
-                       int(matrix[point+1][1]),
+            draw_line( x1, y1, x2, y2,
                        screen, color)
 
         point += 3
@@ -58,24 +60,24 @@ def add_box( polygons, x, y, z, width, height, depth ):
     print "x: {} y: {} z: {} ".format(x, y, z)
     
     #front
-    #add_polygon(polygons, x, y, z, x, y1, z, x1, y1, z)
-    #add_polygon(polygons, x1, y1, z, x1, y, z, x, y, z)
+    add_polygon(polygons, x, y, z, x, y1, z, x1, y1, z)
+    add_polygon(polygons, x1, y1, z, x1, y, z, x, y, z)
 
     #back
-    #add_polygon(polygons, x, y1, z1, x1, y, z1, x, y, z1)
-    #add_polygon(polygons, x1, y, z1, x, y1, z1, x1, y1, z1)
+    add_polygon(polygons, x, y1, z1, x1, y, z1, x, y, z1)
+    add_polygon(polygons, x1, y, z1, x, y1, z1, x1, y1, z1)
 
     #left
-    #add_polygon(polygons, x, y, z, x, y1, z, x, y1, z1)
-    #add_polygon(polygons, x, y, z, x, y, z1, x, y1, z1)
+    add_polygon(polygons, x, y, z, x, y1, z, x, y1, z1)
+    add_polygon(polygons, x, y, z, x, y, z1, x, y1, z1)
 
     #right
-    #add_polygon(polygons, x1, y1, z, x1, y, z, x1, y1, z1)
-    #add_polygon(polygons, x1, y, z1, x1, y1, z1, x1, y, z)
+    add_polygon(polygons, x1, y1, z, x1, y, z, x1, y1, z1)
+    add_polygon(polygons, x1, y, z1, x1, y1, z1, x1, y, z)
 
     #top
-    #add_polygon(polygons, x, y, z, x, y, z1, x1, y, z1,)
-    #add_polygon(polygons, x, y, z, x1, y, z, x1, y, z1)
+    add_polygon(polygons, x, y, z, x, y, z1, x1, y, z1,)
+    add_polygon(polygons, x, y, z, x1, y, z, x1, y, z1)
 
     #bottom
     add_polygon(polygons, x, y1, z, x, y1, z1, x1, y1, z1,)
