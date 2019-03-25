@@ -31,12 +31,7 @@ def draw_polygons( polygons, screen, color ):
         y2 = int(matrix[point+2][2])
         z2 = int(matrix[point+2][2])
         
-        ax = x1 - x0
-        ay = y1 - y0
-        bx = x2 - x0
-        by = y2 - y0
-
-        if ay * bx - ax * by > 0:
+        if (z1 - z0) * (z2 - z0) > 0:
             draw_line( int(matrix[point][0]),
                        int(matrix[point][1]),
                        int(matrix[point+1][0]),
@@ -63,24 +58,24 @@ def add_box( polygons, x, y, z, width, height, depth ):
     print "x: {} y: {} z: {} ".format(x, y, z)
     
     #front
-    add_polygon(polygons, x, y, z, x, y1, z, x1, y1, z)
-    add_polygon(polygons, x1, y1, z, x1, y, z, x, y, z)
+    #add_polygon(polygons, x, y, z, x, y1, z, x1, y1, z)
+    #add_polygon(polygons, x1, y1, z, x1, y, z, x, y, z)
 
     #back
-    add_polygon(polygons, x, y1, z1, x1, y, z1, x, y, z1)
-    add_polygon(polygons, x, y1, z1, x1, y1, z1, x1, y, z1)
+    #add_polygon(polygons, x, y1, z1, x1, y, z1, x, y, z1)
+    #add_polygon(polygons, x1, y, z1, x, y1, z1, x1, y1, z1)
 
     #left
-    add_polygon(polygons, x, y, z, x, y1, z, x, y1, z1)
-    add_polygon(polygons, x, y, z, x, y, z1, x, y1, z1)
+    #add_polygon(polygons, x, y, z, x, y1, z, x, y1, z1)
+    #add_polygon(polygons, x, y, z, x, y, z1, x, y1, z1)
 
     #right
-    add_polygon(polygons, x1, y, z, x1, y1, z, x1, y1, z1)
-    add_polygon(polygons, x1, y, z, x1, y, z1, x1, y1, z1)
+    #add_polygon(polygons, x1, y1, z, x1, y, z, x1, y1, z1)
+    #add_polygon(polygons, x1, y, z1, x1, y1, z1, x1, y, z)
 
     #top
-    add_polygon(polygons, x, y, z, x, y, z1, x1, y, z1,)
-    add_polygon(polygons, x, y, z, x1, y, z, x1, y, z1)
+    #add_polygon(polygons, x, y, z, x, y, z1, x1, y, z1,)
+    #add_polygon(polygons, x, y, z, x1, y, z, x1, y, z1)
 
     #bottom
     add_polygon(polygons, x, y1, z, x, y1, z1, x1, y1, z1,)
