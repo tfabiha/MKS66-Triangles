@@ -3,10 +3,18 @@ from matrix import *
 
 
 def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
+    print "{}, {}, {}".format(x0, y0, z0)
+    print "{}, {}, {}".format(x1, y1, z1)
+    print "{}, {}, {}".format(x2, y2, z2)
+
+    print "\n\n"
+    
     add_point(polygons, x0, y0, z0)
     add_point(polygons, x1, y1, z1)
     add_point(polygons, x2, y2, z2)
 
+    print_matrix(polygons)
+    
 
 def draw_polygons( polygons, screen, color ):
     matrix = polygons
@@ -42,11 +50,16 @@ def draw_polygons( polygons, screen, color ):
         yn = za * xb - xa * zb
         zn = xa * yb - ya * xb
         
-        if zn < 0:
+        if -2 < 0:
+            print "first"
             draw_line( x0, y0, x1, y1,
                        screen, color)
+
+            print "second"
             draw_line( x0, y0, x2, y2,
                        screen, color)
+
+            print "third"
             draw_line( x1, y1, x2, y2,
                        screen, color)
 
@@ -86,7 +99,8 @@ def add_box( polygons, x, y, z, width, height, depth ):
     
 def add_sphere(polygons, cx, cy, cz, r, step ):
     points = generate_sphere(cx, cy, cz, r, step)
-
+    #print_matrix(points)
+    
     lat_start = 0
     lat_stop = step
     longt_start = 0
@@ -96,14 +110,21 @@ def add_sphere(polygons, cx, cy, cz, r, step ):
     for lat in range(lat_start, lat_stop):
         for longt in range(longt_start, longt_stop+1):
             index = lat * step + longt
+            
+            if index % step == 0:
+                print "true"
 
-            add_edge(polygons, points[index][0],
-                     points[index][1],
-                     points[index][2],
-                     points[index][0]+1,
-                     points[index][1]+1,
-                     points[index][2]+1 )
-
+                print "{}, {}, {}".format(points[index][0], points[index][1], points[index][2])
+                print "{}, {}, {}".format(points[index+1][0], points[index+1][1], points[index+1][2])
+                print "{}, {}, {}".format(points[index+step+1][0], points[index+step+1][1], points[index+step+1][2])
+                
+                add_polygon(polygons,
+                            points[index][0], points[index][1], points[index][2],
+                            points[index+1][0], points[index+1][1], points[index+1][2],
+                            points[index+step+1][0], points[index+step+1][1], points[index+step+1][2])
+                            
+                            
+            
 def generate_sphere( cx, cy, cz, r, step ):
     points = []
 
