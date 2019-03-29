@@ -135,9 +135,20 @@ def add_sphere(polygons, cx, cy, cz, r, step ):
 
             elif (index + 2) & step != 0:
                 
-                if lat < lat_stop - 1:
+                if lat < lat_stop - 2:
+                    add_polygon(polygons,
+                                points[index][0], points[index][1], points[index][2],
+                                points[index+1][0], points[index+1][1], points[index+1][2],
+                                points[index+step+1][0], points[index+step+1][1], points[index+step+1][2])
                     
-                    pass
+                else:
+                        
+                    add_polygon(polygons,
+                                points[index][0], points[index][1], points[index][2],
+                                points[index+1][0], points[index+1][1], points[index+1][2],
+                                points[longt+1][0], points[longt+1][1], points[longt+1][2])
+                    
+                    
                     
 def generate_sphere( cx, cy, cz, r, step ):
     points = []
