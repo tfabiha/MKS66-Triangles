@@ -3,17 +3,10 @@ from matrix import *
 
 
 def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
-    print "{}, {}, {}".format(x0, y0, z0)
-    print "{}, {}, {}".format(x1, y1, z1)
-    print "{}, {}, {}".format(x2, y2, z2)
-
-    print "\n\n"
     
     add_point(polygons, x0, y0, z0)
     add_point(polygons, x1, y1, z1)
     add_point(polygons, x2, y2, z2)
-
-    print_matrix(polygons)
     
 
 def draw_polygons( polygons, screen, color ):
@@ -50,16 +43,14 @@ def draw_polygons( polygons, screen, color ):
         yn = za * xb - xa * zb
         zn = xa * yb - ya * xb
         
-        if -2 < 0:
-            print "first"
+        if zn < 0:
+
             draw_line( x0, y0, x1, y1,
                        screen, color)
 
-            print "second"
             draw_line( x0, y0, x2, y2,
                        screen, color)
 
-            print "third"
             draw_line( x1, y1, x2, y2,
                        screen, color)
 
@@ -69,8 +60,6 @@ def add_box( polygons, x, y, z, width, height, depth ):
     x1 = x + width
     y1 = y - height
     z1 = z - depth
-
-    print "x: {} y: {} z: {} ".format(x, y, z)
     
     #front
     add_polygon(polygons, x, y, z1, x, y1, z1, x1, y1, z1)
@@ -115,39 +104,58 @@ def add_sphere(polygons, cx, cy, cz, r, step ):
                 
                 if lat < lat_stop - 1:
                     
-                    print "{}, {}, {}".format(points[index][0], points[index][1], points[index][2])
-                    print "{}, {}, {}".format(points[index+1][0], points[index+1][1], points[index+1][2])
-                    print "{}, {}, {}".format(points[index+step+1][0], points[index+step+1][1], points[index+step+1][2])
-                
                     add_polygon(polygons,
                                 points[index][0], points[index][1], points[index][2],
                                 points[index+1][0], points[index+1][1], points[index+1][2],
                                 points[index+step+1][0], points[index+step+1][1], points[index+step+1][2])
                 else:
-                    print "{}, {}, {}".format(points[index][0], points[index][1], points[index][2])
-                    print "{}, {}, {}".format(points[index+1][0], points[index+1][1], points[index+1][2])
-                    print "{}, {}, {}".format(points[1][0], points[1][1], points[1][2])
+                    
+                    add_polygon(polygons,
+                                points[index][0], points[index][1], points[index][2],
+                                points[index+1][0], points[index+1][1], points[index+1][2],
+                                points[longt+1][0], points[longt+1][1], points[longt+1][2])
+                    
+            elif (index + 2) % step != 0 and (index + 1) % step != 0:
                 
+                if lat < lat_stop - 1:
+
+                    add_polygon(polygons,
+                                points[index][0], points[index][1], points[index][2],
+                                points[index+1][0], points[index+1][1], points[index+1][2],
+                                points[index+step+1][0], points[index+step+1][1], points[index+step+1][2])
+
+                    add_polygon(polygons,
+                                points[index][0], points[index][1], points[index][2],
+                                points[index+step+1][0], points[index+step+1][1], points[index+step+1][2],
+                                points[index+step][0], points[index+step][1], points[index+step][2])
+
+                else:
                     add_polygon(polygons,
                                 points[index][0], points[index][1], points[index][2],
                                 points[index+1][0], points[index+1][1], points[index+1][2],
                                 points[longt+1][0], points[longt+1][1], points[longt+1][2])
 
-            elif (index + 2) & step != 0:
-                
-                if lat < lat_stop - 2:
                     add_polygon(polygons,
                                 points[index][0], points[index][1], points[index][2],
-                                points[index+1][0], points[index+1][1], points[index+1][2],
-                                points[index+step+1][0], points[index+step+1][1], points[index+step+1][2])
-                    
+                                points[longt+1][0], points[longt+1][1], points[longt+1][2],
+                                points[longt][0], points[longt][1], points[longt][2])
+
+            elif (index + 2) % step == 0:
+
+                if lat < lat_stop - 1:
+
+                    add_polygon(polygons,
+                                points[index][0], points[index][1], points[index][2],
+                                points[index+step+1][0], points[index+step+1][1], points[index+step+1][2],
+                                points[index+step][0], points[index+step][1], points[index+step][2])
+
                 else:
-                        
+
                     add_polygon(polygons,
                                 points[index][0], points[index][1], points[index][2],
-                                points[index+1][0], points[index+1][1], points[index+1][2],
-                                points[longt+1][0], points[longt+1][1], points[longt+1][2])
-                    
+                                points[longt+1][0], points[longt+1][1], points[longt+1][2],
+                                points[longt][0], points[longt][1], points[longt][2])
+                
                     
                     
 def generate_sphere( cx, cy, cz, r, step ):
@@ -269,8 +277,6 @@ def add_point( matrix, x, y, z=0 ):
 
 
 def draw_line( x0, y0, x1, y1, screen, color ):
-
-    print "({}, {}) -> ({}, {})".format(x0, y0, x1, y1)
     
     #swap points if going right -> left
     if x0 > x1:
