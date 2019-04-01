@@ -10,4 +10,5 @@ edges = []
 polygons = []
 transform = new_matrix()
 
-parse_file( 'script', edges, polygons, transform, screen, color )
+parse_file( 'kat', edges, polygons, transform, screen, color )
+
